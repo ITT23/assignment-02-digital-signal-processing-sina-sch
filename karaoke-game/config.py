@@ -7,6 +7,7 @@ class Window:
 class Image:
     START="start.png"
     RETRY="retry.png"
+    # source: https://pixabay.com/de/photos/milchstra%c3%9fe-sterne-nachthimmel-2750627/
     BACKGROUND="background.jpg"
 
 
