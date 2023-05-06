@@ -7,8 +7,6 @@ from sound import Sound
 import numpy as np
 
 game_window = window.Window(c.Window.WIDTH, c.Window.HEIGHT)
-score = 0
-
 
 @game_window.event
 def on_draw():

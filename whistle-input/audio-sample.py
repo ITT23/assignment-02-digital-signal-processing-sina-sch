@@ -34,6 +34,7 @@ stream = p.open(format=FORMAT,
 fig = plt.figure()
 ax = plt.gca()
 line, = ax.plot(np.zeros(CHUNK_SIZE))
+line2, = ax.plot(np.zeros(CHUNK_SIZE), 'g')
 ax.set_ylim(-30000, 30000)
 
 plt.ion()
@@ -47,6 +48,7 @@ while True:
     # Convert audio data to numpy array
     data = np.frombuffer(data, dtype=np.int16)
     line.set_ydata(data)
+    line2.set_ydata(np.fft.fft(data))
 
     # Redraw plot
     fig.canvas.draw()
