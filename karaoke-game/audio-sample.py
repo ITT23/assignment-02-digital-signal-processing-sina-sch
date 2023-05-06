@@ -33,11 +33,14 @@ stream = p.open(format=FORMAT,
 # set up interactive plot
 fig = plt.figure()
 ax = plt.gca()
-line, = ax.plot(np.zeros(CHUNK_SIZE))
+line, = ax.plot(np.zeros(CHUNK_SIZE), 'b')
 ax.set_ylim(-30000, 30000)
 
 plt.ion()
 plt.show()
+
+# set up interactive plot for frequency
+line2, = ax.plot(np.zeros(CHUNK_SIZE), 'g')
 
 # continuously capture and plot audio singal
 while True:
@@ -47,7 +50,10 @@ while True:
     # Convert audio data to numpy array
     data = np.frombuffer(data, dtype=np.int16)
     line.set_ydata(data)
+    # transform the audio with fft
+    line2.set_ydata(np.fft.fft(data))
 
     # Redraw plot
     fig.canvas.draw()
     fig.canvas.flush_events()
+
