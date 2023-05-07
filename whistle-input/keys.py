@@ -1,6 +1,7 @@
 from pynput.keyboard import Key, Controller
 
 def scroll(up:bool, down:bool) -> None:
+    """implements scrolling up or down in external window"""
     keyboard = Controller()
     if up:
         # Press and release up arrow key

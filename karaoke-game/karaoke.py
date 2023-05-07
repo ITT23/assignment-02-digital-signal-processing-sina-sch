@@ -14,12 +14,12 @@ def on_draw():
     karaoke_game.draw_game()
     if not karaoke_game.startButton.display_start:
         Sound.update_sounds()
-        data = stream.read(audio.chunk_size)
+        data = audio.stream.read(audio.chunk_size)
         # Convert audio data to numpy array
         data = np.frombuffer(data, dtype=np.int16)
         freq = audio.det_freq(data)
         karaoke_game.score = Sound.hit_note(freq, karaoke_game.score)
-
+        # if the last rectangle disappears, game ends
         if Sound.sounds[-1].sound_shape.x == -Sound.sounds[-1].width:
             karaoke_game.end_game()
 
@@ -30,5 +30,4 @@ def on_mouse_press(x: float, y: float, button, modifiers):
 if __name__ == '__main__':
     karaoke_game = KaraokeGame()
     audio = Audio()
-    stream = audio.stream
     pyglet.app.run()

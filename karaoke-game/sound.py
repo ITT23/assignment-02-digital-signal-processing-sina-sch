@@ -25,6 +25,7 @@ class Sound:
                                             color=self.color)
     
     def init_sounds() -> None:
+        """initialise musical scale"""
         Sound.sounds.append(Sound()) # A
         Sound.sounds.append(Sound(sound=c.Sound.H, color=c.Sound.H_COLOR, y=c.Sound.H_POS, width=c.Sound.H_WIDTH, delay=c.Sound.H_DELAY)) # H
         Sound.sounds.append(Sound(sound=c.Sound.C, color=c.Sound.C_COLOR, y=c.Sound.C_POS, width=c.Sound.C_WIDTH, delay=c.Sound.C_DELAY)) # C
@@ -34,22 +35,25 @@ class Sound:
         Sound.sounds.append(Sound(sound=c.Sound.G, color=c.Sound.G_COLOR, y=c.Sound.G_POS, width=c.Sound.G_WIDTH, delay=c.Sound.G_DELAY)) # G
 
     def draw_sounds() -> None:
+        """draw the musical scale"""
         for sound in Sound.sounds:
             if sound.display:
                 sound.draw_sound() 
 
     def draw_sound(self) -> None:
+        """draw a rectangle that represents the current note"""
         self.sound_shape.draw()
 
     def update_sounds() -> None:
+        """ all rectangles move to the left """
         for sound in Sound.sounds:
             sound.sound_shape.x-=1
 
     def hit_note(freq: float, score: int) -> int:
+        """detect if a note was hit -> returns score"""
         for sound in Sound.sounds:
             for note in sound.sound:
                 if note + 1 >= freq >= note - 1 and sound.sound_shape.x + sound.width >= c.Window.WIDTH/2 >= sound.sound_shape.x:
-                    print("note hit!", freq, "note", Sound.sounds.index(sound))
                     sound.hit = True
                     score += 1
         return score

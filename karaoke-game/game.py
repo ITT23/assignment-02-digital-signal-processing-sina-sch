@@ -23,8 +23,14 @@ class KaraokeGame:
                                         font_name='Arial',
                                         font_size=18,
                                         x=20, y= c.Window.HEIGHT - 30)
+        self.end = False
+        self.end_label = text.Label(text='',
+                                    font_name='Arial',
+                                    font_size=22,
+                                    x=20, y= c.Window.HEIGHT/2)
         
     def draw_game(self) -> None:
+        """draws background, start button and notes if game has already started"""
         self.background.draw()
         if self.startButton.display_start:
             self.startButton.draw_button()
@@ -35,10 +41,11 @@ class KaraokeGame:
             self.score_label.text = 'Score: '+ str(self.score)
             self.score_label.draw()
             self.draw_feedback()
-            if self.startButton.display_retry:
-                self.startButton.draw_retry_button()
+            if self.end:
+                self.end_label.draw()
         
     def draw_feedback(self) -> None:
+        """"displays feedback while playing the game"""
         if 10 < self.score < 50:
             self.feedback_label.text = 'ok'
         elif 50 < self.score < 100:
@@ -50,10 +57,15 @@ class KaraokeGame:
         self.feedback_label.draw()
     
     def end_game(self) -> None:
+        """"displays feedback at the end of the game"""
         self.time_display=False
-        self.startButton.display_retry=True
-        #self.startButton.retry_button.draw()
-
+        self.end = True
+        if self.score >= 100:
+            self.end_label.text = "CONGRATS, YOU'RE A STAR!"
+        elif 100 > self.score > 50:
+            self.end_label.text = "WELL DONE!"
+        else:
+            self.end_label.text = "MAYBE NEXT TIME..."
 
 
 

@@ -7,9 +7,9 @@ class Stack:
         self.rectangles = []
         self.selected_rect = selected_rect
         self.init_rects()
-
-    #initialize stack    
+  
     def init_rects(self) -> None:
+        """initialises stack of rectangles"""
         y = c.Rects.DIST/2
         for i in range(c.Rects.AMOUNT):
             rect = shapes.Rectangle(x=c.Window.WIDTH/2,
@@ -21,10 +21,12 @@ class Stack:
             y += c.Rects.HEIGHT + c.Rects.DIST
     
     def draw_rects(self) -> None:
+        """draws stack"""
         for rect in self.rectangles:
             rect.draw()
 
     def update_rects(self, up:bool, down:bool):
+        """updates color of selected rectangle if whistling was detected"""
         if up and self.selected_rect < c.Rects.AMOUNT:
             # change color of previously selected rectangle
             self.rectangles[self.selected_rect - 1].color = c.Rects.COLOR

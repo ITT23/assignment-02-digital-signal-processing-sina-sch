@@ -26,6 +26,7 @@ class Audio:
 
 
     def det_freq(self, data: List[Any]) -> float:
+        """determines the current frequency"""
         spectrum = np.abs(np.fft.fft(data))
         freq = np.argmax(spectrum)
         return freq

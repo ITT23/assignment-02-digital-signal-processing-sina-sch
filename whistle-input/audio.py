@@ -14,7 +14,7 @@ class Audio:
         self.rate = c.PyAudio.RATE
         self.p = pyaudio.PyAudio()
     	# maybe change later to input option again
-        self.input_device = 1
+        self.input_device = 0
         # open audio input stream
         self.stream = self.p.open(format=self.format,
                                 channels=self.channels,
@@ -28,25 +28,26 @@ class Audio:
         self.down = 0
 
     def det_freq(self, data: List[Any]) -> float:
-        kernel = signal.gaussian(5, 3) # create a kernel
+        """determines current frequency"""
+        # filter signal to remove background noise
+        kernel = signal.gaussian(9, 1.5) # create a kernel
         kernel /= np.sum(kernel) # normalize the kernel so it does not affect the signal's amplitude
         data = np.convolve(data, kernel, 'same')
+        # fast fourier transform -> get frequency
         spectrum = np.abs(np.fft.fft(data))
-        freq = np.argmax(spectrum)
+        spectrum = spectrum[0:int(len(data)/2.)]
+        freq = np.argmax(spectrum)    
         return freq
     
     def analyze_freq(self, freq) -> None:
+        """analyses frequency pattern"""
         if freq <= 25 or freq > 1100:
-            print("silence", freq)
             self.silence += 1
             self.up = 0
             self.down = 0
             return False, False
-        else:
-            print("not silent", freq)
 
         self.frequencies.append(freq)
-        #print(self.frequencies)
         if len(self.frequencies) > 1:
             if freq < self.frequencies[-2]:
                 self.down += 1
@@ -57,17 +58,15 @@ class Audio:
     def detect_whistling(self):
         up = False
         down = False
-        print("self.silence", self.silence)
-        if self.silence >= 5:
+        # idea with silence from tina
+        if self.silence >= 7:
             self.silence = 0
-            if self.up > self.down: #self.up >= 0.6*len(self.frequencies):
+            if self.up > self.down:
                 up = True
-                print("up")
                 self.up = 0
                 self.down = 0
             elif self.up < self.down:
                 down = True
-                print("down")
                 self.down = 0
                 self.up = 0
         return up, down
