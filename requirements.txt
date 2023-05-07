@@ -2,3 +2,6 @@ numpy
 pyglet
 pyaudio
 typing
+scipy
+matplotlib
+pynput
